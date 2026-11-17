@@ -6,7 +6,8 @@ RUN apt-get update \
   && rm -rf /var/lib/apt/lists/*
 WORKDIR /app
 COPY source/package.json source/package-lock.json ./
-RUN npm ci
+# O package-lock.json do repositório está desatualizado (faltam pacotes do express 5): `npm ci` recusa.
+RUN npm install --no-audit --no-fund
 COPY source/ ./
 RUN npm run build && npm prune --omit=dev
 
